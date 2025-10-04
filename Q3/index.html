@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jigsaw Puzzle Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Jigsaw Puzzle Game</h1>
+        </header>
+
+        <div class="game-setup">
+            <div class="upload-section">
+                <h2>Upload Image</h2>
+                <input type="file" id="imageUpload" accept="image/*">
+                <div class="image-preview">
+                    <img id="previewImage" src="" alt="Preview" style="display: none;">
+                </div>
+            </div>
+
+            <div class="difficulty-section">
+                <h2>Select Difficulty</h2>
+                <div class="difficulty-buttons">
+                    <button class="difficulty-btn" data-pieces="5">5 Pieces (Easy)</button>
+                    <button class="difficulty-btn" data-pieces="20">20 Pieces (Medium)</button>
+                    <button class="difficulty-btn" data-pieces="40">40 Pieces (Hard)</button>
+                    <button class="difficulty-btn" data-pieces="80">80 Pieces (Expert)</button>
+                    <button class="difficulty-btn" data-pieces="100">100 Pieces (Master)</button>
+                </div>
+            </div>
+
+            <div class="game-controls">
+                <button id="startGame" disabled>Start Puzzle</button>
+                <button id="shufflePieces" disabled>Shuffle Pieces</button>
+                <button id="resetGame" disabled>Reset Game</button>
+            </div>
+        </div>
+
+        <div class="game-area">
+            <div class="puzzle-container">
+                <div class="puzzle-board" id="puzzleBoard"></div>
+            </div>
+
+            <div class="pieces-container">
+                <h3>Puzzle Pieces</h3>
+                <div class="pieces-area" id="piecesArea"></div>
+            </div>
+        </div>
+
+        <div class="game-status">
+            <div class="status-info">
+                <span id="piecesPlaced">0</span> / <span id="totalPieces">0</span> pieces placed
+            </div>
+            <div class="timer">
+                Time: <span id="timer">00:00</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
