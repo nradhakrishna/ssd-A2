@@ -117,3 +117,5 @@ The website uses CSS custom properties for easy theming:
 ---
 
 *This modern redesign transforms the original static course website into an engaging, accessible, and responsive web application while preserving all educational content and functionality.*
+
+https://nradhakrishna.github.io/ssd-course-website/newssd.html
