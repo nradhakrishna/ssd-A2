@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Bowling Alley Game</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Three.js library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Cannon.js for physics -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cannon.js/0.6.2/cannon.min.js"></script>
+</head>
+<body>
+    <div class="game-container">
+        <!-- Game Header -->
+        <header class="game-header">
+            <h1>🎳 Bowling Alley Game</h1>
+            <div class="game-mode-selector">
+                <label>Game Mode:</label>
+                <select id="gameModeSelect">
+                    <option value="singles">Traditional Singles</option>
+                    <option value="doubles">Unified Doubles</option>
+                    <option value="team">Unified Team (4 Players)</option>
+                </select>
+            </div>
+        </header>
+
+        <!-- Main Game Area -->
+        <div class="main-content">
+            <!-- 3D Canvas -->
+            <div class="canvas-container">
+                <canvas id="gameCanvas"></canvas>
+                
+                <!-- Game Overlay -->
+                <div class="game-overlay">
+                    <div class="frame-indicator">
+                        Frame: <span id="currentFrame">1</span> / 10
+                    </div>
+                    <div class="ball-indicator">
+                        Ball: <span id="currentBall">1</span>
+                    </div>
+                    <div class="pins-knocked">
+                        Pins: <span id="pinsKnocked">0</span> / 10
+                    </div>
+                </div>
+
+                <!-- Control Instructions -->
+                <div class="controls-overlay">
+                    <h3>🎮 How to Play</h3>
+                    <p><strong>1. MOVE MOUSE</strong> across screen to aim</p>
+                    <p><strong>2. CLICK & HOLD</strong> to build power</p>
+                    <p><strong>3. RELEASE</strong> to throw!</p>
+                    <hr style="margin: 10px 0; border-color: #4ecca3;">
+                    <p><strong>OR</strong></p>
+                    <p>• Click "Throw Ball" for auto-throw</p>
+                    <hr style="margin: 10px 0; border-color: #4ecca3;">
+                    <p><strong>Space:</strong> Reset camera</p>
+                    <p><strong>R:</strong> New game</p>
+                </div>
+
+                <!-- Result Message -->
+                <div id="resultMessage" class="result-message"></div>
+            </div>
+
+            <!-- Scoreboard -->
+            <div class="scoreboard-container">
+                <h2>Scoreboard</h2>
+                
+                <!-- Player Selector for Multi-player modes -->
+                <div id="playerSelector" class="player-selector" style="display: none;">
+                    <label>Current Player:</label>
+                    <select id="currentPlayerSelect"></select>
+                </div>
+
+                <!-- Score Table -->
+                <div class="score-table" id="scoreTable"></div>
+
+                <!-- Game Controls -->
+                <div class="game-controls">
+                    <button id="throwBtn" class="btn btn-primary">Throw Ball</button>
+                    <button id="resetBtn" class="btn btn-secondary">New Game</button>
+                    <button id="nextGameBtn" class="btn btn-success" style="display: none;">Next Game</button>
+                </div>
+
+                <!-- Game Summary -->
+                <div class="game-summary" id="gameSummary" style="display: none;">
+                    <h3>Game Summary</h3>
+                    <div id="summaryContent"></div>
+                </div>
+
+                <!-- Rules Section -->
+                <details class="rules-section">
+                    <summary>📋 Game Rules</summary>
+                    <div class="rules-content">
+                        <h4>Scoring Rules:</h4>
+                        <ul>
+                            <li><strong>Strike (X):</strong> Knock down all 10 pins with first ball → Score = 10 + next 2 balls</li>
+                            <li><strong>Spare (/):</strong> Knock down remaining pins with second ball → Score = 10 + next 1 ball</li>
+                            <li><strong>Open Frame:</strong> Score = Total pins knocked down</li>
+                            <li><strong>10th Frame Special:</strong> Strike = 2 bonus balls, Spare = 1 bonus ball</li>
+                        </ul>
+                        <h4>Game Modes:</h4>
+                        <ul>
+                            <li><strong>Singles:</strong> 1 player, 3 games, calculate average (max 300/game)</li>
+                            <li><strong>Doubles:</strong> 2 players (Athlete + Partner), combined score (max 600/game)</li>
+                            <li><strong>Team:</strong> 4 players, combined score (max 1200/game)</li>
+                        </ul>
+                        <h4>Etiquette:</h4>
+                        <ul>
+                            <li>Bowl on your own lane</li>
+                            <li>Wait for adjacent lanes to finish</li>
+                            <li>Observe foul line (behind start position)</li>
+                        </ul>
+                    </div>
+                </details>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-content">
+            <h2>Loading Bowling Alley...</h2>
+            <div class="loading-spinner"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+

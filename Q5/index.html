@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Dictionary Generator</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- jsPDF library for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- html2canvas for capturing HTML as image -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 Data Dictionary Generator</h1>
+            <p class="subtitle">Generate comprehensive database documentation with table relationships</p>
+        </header>
+
+        <!-- Instructions Section -->
+        <div class="instructions-section">
+            <h2>📖 How to Use</h2>
+            <div class="instruction-steps">
+                <div class="step">
+                    <h3>Step 1: Prepare Your Database Schema</h3>
+                    <p>Export your database schema in JSON format. Here's how for different databases:</p>
+                    <div class="db-examples">
+                        <details>
+                            <summary><strong>MySQL / MariaDB</strong></summary>
+                            <pre><code>-- Query to get table structure
+SELECT 
+    TABLE_NAME,
+    COLUMN_NAME,
+    DATA_TYPE,
+    IS_NULLABLE,
+    COLUMN_KEY,
+    COLUMN_COMMENT
+FROM INFORMATION_SCHEMA.COLUMNS
+WHERE TABLE_SCHEMA = 'your_database_name'
+ORDER BY TABLE_NAME, ORDINAL_POSITION;
+
+-- Get foreign key relationships
+SELECT 
+    TABLE_NAME,
+    COLUMN_NAME,
+    REFERENCED_TABLE_NAME,
+    REFERENCED_COLUMN_NAME
+FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE
+WHERE TABLE_SCHEMA = 'your_database_name'
+    AND REFERENCED_TABLE_NAME IS NOT NULL;</code></pre>
+                        </details>
+                        <details>
+                            <summary><strong>PostgreSQL</strong></summary>
+                            <pre><code>-- Query to get table structure
+SELECT 
+    table_name,
+    column_name,
+    data_type,
+    is_nullable,
+    column_default
+FROM information_schema.columns
+WHERE table_schema = 'public'
+ORDER BY table_name, ordinal_position;
+
+-- Get foreign key relationships
+SELECT
+    tc.table_name,
+    kcu.column_name,
+    ccu.table_name AS foreign_table_name,
+    ccu.column_name AS foreign_column_name
+FROM information_schema.table_constraints AS tc
+JOIN information_schema.key_column_usage AS kcu
+    ON tc.constraint_name = kcu.constraint_name
+JOIN information_schema.constraint_column_usage AS ccu
+    ON ccu.constraint_name = tc.constraint_name
+WHERE tc.constraint_type = 'FOREIGN KEY';</code></pre>
+                        </details>
+                        <details>
+                            <summary><strong>SQLite</strong></summary>
+                            <pre><code>-- Get all tables
+SELECT name FROM sqlite_master WHERE type='table';
+
+-- For each table, get its schema
+PRAGMA table_info(table_name);
+
+-- Get foreign keys
+PRAGMA foreign_key_list(table_name);</code></pre>
+                        </details>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <h3>Step 2: Format as JSON</h3>
+                    <p>Convert your database schema to the following JSON format:</p>
+                    <pre><code>{
+  "database": "Your Database Name",
+  "tables": [
+    {
+      "name": "users",
+      "description": "User accounts table",
+      "columns": [
+        {
+          "name": "id",
+          "type": "INT",
+          "nullable": false,
+          "primaryKey": true,
+          "description": "User ID"
+        },
+        {
+          "name": "email",
+          "type": "VARCHAR(255)",
+          "nullable": false,
+          "description": "User email address"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "from": "orders",
+      "to": "users",
+      "fromColumn": "user_id",
+      "toColumn": "id",
+      "type": "many-to-one"
+    }
+  ]
+}</code></pre>
+                </div>
+
+                <div class="step">
+                    <h3>Step 3: Upload or Paste Your Schema</h3>
+                    <p>Use the file upload or text input below to provide your schema, then click "Generate Dictionary"</p>
+                </div>
+
+                <div class="step">
+                    <h3>Step 4: Export</h3>
+                    <p>Export the generated data dictionary as HTML or PDF for documentation</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Input Section -->
+        <div class="input-section">
+            <h2>📥 Input Schema</h2>
+            
+            <div class="input-methods">
+                <div class="input-method">
+                    <h3>Upload JSON File</h3>
+                    <input type="file" id="fileUpload" accept=".json">
+                </div>
+
+                <div class="input-method">
+                    <h3>Or Paste JSON</h3>
+                    <textarea id="schemaInput" rows="10" placeholder="Paste your JSON schema here..."></textarea>
+                </div>
+
+                <div class="input-method">
+                    <h3>Or Try Sample Schema</h3>
+                    <select id="sampleSelect">
+                        <option value="">-- Select a sample --</option>
+                        <option value="ecommerce">E-commerce Database</option>
+                        <option value="blog">Blog Platform</option>
+                        <option value="school">School Management System</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button id="generateBtn" class="btn btn-primary">Generate Dictionary</button>
+                <button id="clearBtn" class="btn btn-secondary">Clear</button>
+            </div>
+        </div>
+
+        <!-- Output Section -->
+        <div id="outputSection" class="output-section" style="display: none;">
+            <div class="export-buttons">
+                <button id="exportHtmlBtn" class="btn btn-success">📄 Export as HTML</button>
+                <button id="exportPdfBtn" class="btn btn-success">📑 Export as PDF</button>
+            </div>
+
+            <div id="dictionaryOutput" class="dictionary-output">
+                <!-- Generated content will appear here -->
+            </div>
+        </div>
+
+        <!-- Error Display -->
+        <div id="errorDisplay" class="error-display" style="display: none;"></div>
+    </div>
+
+    <script src="samples.js"></script>
+    <script src="script.js"></script>
+    
+    <!-- Event Tracker - Q6 -->
+    <script src="../Q6/event-tracker.js"></script>
+</body>
+</html>
+
+

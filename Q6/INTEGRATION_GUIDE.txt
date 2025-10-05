@@ -1,0 +1,296 @@
+================================================================================
+EVENT TRACKER - Q6 Integration Guide
+================================================================================
+
+OBJECTIVE:
+Capture all click events and page views across Q1-Q5 implementations
+Print output to browser console
+
+================================================================================
+QUICK INTEGRATION FOR Q1-Q5
+================================================================================
+
+Add this ONE LINE to each HTML file (before </body>):
+
+<script src="../Q6/event-tracker.js"></script>
+
+================================================================================
+WHERE TO ADD
+================================================================================
+
+Q1 - Todo List (Q1/index.html):
+--------------------------------
+Line: Before </body>
+Add:  <script src="../Q6/event-tracker.js"></script>
+
+Q2 - Expense Tracker (Q2/index.html):
+--------------------------------------
+Line: Before </body>
+Add:  <script src="../Q6/event-tracker.js"></script>
+
+Q3 - Jigsaw Puzzle (Q3/index.html):
+------------------------------------
+Line: Before </body>
+Add:  <script src="../Q6/event-tracker.js"></script>
+
+Q4 - Stoplight Game (Q4/index.html):
+-------------------------------------
+Line: Before </body>
+Add:  <script src="../Q6/event-tracker.js"></script>
+
+Q5 - Data Dictionary (Q5/index.html):
+--------------------------------------
+Line: Before </body>
+Add:  <script src="../Q6/event-tracker.js"></script>
+
+================================================================================
+HOW TO VIEW CAPTURED EVENTS
+================================================================================
+
+1. Open any Q1-Q5 page in browser
+2. Press F12 to open Developer Tools
+3. Go to "Console" tab
+4. Interact with the page (click, type, scroll, etc.)
+5. Watch events appear in console in real-time!
+
+================================================================================
+CONSOLE OUTPUT EXAMPLES
+================================================================================
+
+On Page Load:
+-------------
+🎯 Event Tracker Initialized
+Session ID: session_1728123456_abc123
+Start Time: 10/5/2025, 12:34:56 PM
+-----------------------------------
+📄 PAGE VIEW
+URL: http://localhost:8000/Q1/index.html
+Title: Todo List Application
+Viewport: 1920x1080
+-----------------------------------
+
+On Button Click:
+----------------
+🖱️ CLICK EVENT
+Element: BUTTON #addBtn.btn.btn-primary
+ID: addBtn
+Class: btn btn-primary
+Text: Add Task
+Position: (450, 320)
+Path: html > body > div.container > button#addBtn
+Styles: {background-color: 'rgb(33, 150, 243)', ...}
+-----------------------------------
+
+On Input Change:
+----------------
+⌨️ INPUT CHANGE
+Element: INPUT #taskInput
+Type: text
+Value: Buy groceries
+-----------------------------------
+
+On Form Submit:
+---------------
+📝 FORM SUBMISSION
+Form: taskForm
+Method: POST
+Data: {task: 'Buy groceries', priority: 'high'}
+-----------------------------------
+
+================================================================================
+CONSOLE COMMANDS (Available Globally)
+================================================================================
+
+getEventSummary()   - Show statistics summary
+getAllEvents()      - Get all captured event data
+exportEvents()      - Export as JSON format
+clearEvents()       - Clear all captured data
+
+Example Usage:
+--------------
+1. Open console (F12)
+2. Type: getEventSummary()
+3. Press Enter
+4. See your event statistics!
+
+================================================================================
+WHAT GETS CAPTURED
+================================================================================
+
+✅ CLICK EVENTS
+   - Element tag, ID, class, name
+   - Text content and values
+   - Position coordinates
+   - DOM path
+   - CSS selector
+   - Computed styles
+   - All attributes
+
+✅ PAGE VIEWS
+   - URL and path
+   - Page title
+   - Referrer
+   - Screen resolution
+   - Viewport size
+   - User agent
+
+✅ FORM SUBMISSIONS
+   - Form ID and name
+   - Form method and action
+   - All form data
+
+✅ INPUT CHANGES
+   - Input type and value
+   - Element ID and name
+
+✅ MOUSE MOVEMENTS (throttled)
+✅ SCROLL EVENTS (throttled)
+✅ KEYBOARD EVENTS
+✅ VISIBILITY CHANGES
+
+================================================================================
+DEMO PAGE
+================================================================================
+
+Test the tracker before integrating:
+
+1. Open Q6/demo.html in browser
+2. Press F12 for console
+3. Click buttons, fill forms, scroll
+4. Watch events appear in console!
+
+URL: http://localhost:8000/Q6/demo.html
+
+================================================================================
+TESTING ON EACH PROJECT
+================================================================================
+
+Q1 (Todo List):
+---------------
+Expected Events:
+- Page view on load
+- Input changes in task field
+- Button clicks (Add, Edit, Delete)
+- Checkbox clicks for completion
+- List item interactions
+
+Q2 (Expense Tracker):
+---------------------
+Expected Events:
+- Page view on load
+- Input changes in amount/description
+- File upload clicks
+- Button clicks (Add, Export)
+- Form submissions
+
+Q3 (Jigsaw Puzzle):
+-------------------
+Expected Events:
+- Page view on load
+- File upload for image
+- Difficulty button clicks
+- Puzzle piece drag events
+- Generate/Reset button clicks
+
+Q4 (Stoplight Game):
+--------------------
+Expected Events:
+- Page view on load
+- Game mode selection
+- Go/Stop button clicks
+- Player interactions
+- Statistics updates
+
+Q5 (Data Dictionary):
+----------------------
+Expected Events:
+- Page view on load
+- File upload for schema
+- JSON textarea input
+- Sample selection dropdown
+- Generate/Export button clicks
+- Scroll events on documentation
+
+================================================================================
+PRIVACY & PERFORMANCE
+================================================================================
+
+✓ No external server communication
+✓ Data stays in browser only
+✓ Password fields NOT captured
+✓ Mouse/scroll events throttled
+✓ Minimal performance impact
+
+================================================================================
+TROUBLESHOOTING
+================================================================================
+
+Problem: No events showing
+Solution: 
+- Check console for errors
+- Verify script is loaded
+- Try: console.log(window.eventTracker)
+
+Problem: Too many events
+Solution:
+- Normal! Mouse/scroll create many events
+- Use clearEvents() to reset
+- Filter by event type if needed
+
+Problem: Console is cluttered
+Solution:
+- Click "Clear console" button
+- Use console filters
+- Close/reopen Developer Tools
+
+================================================================================
+FILE STRUCTURE
+================================================================================
+
+Q6/
+├── event-tracker.js       # Main tracker script
+├── demo.html             # Test/demo page
+├── README.md             # Full documentation
+└── INTEGRATION_GUIDE.txt # This file
+
+================================================================================
+EXAMPLE INTEGRATION
+================================================================================
+
+<!-- Q1/index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Todo List</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Your content -->
+    </div>
+
+    <!-- Your scripts -->
+    <script src="script.js"></script>
+    
+    <!-- ADD THIS LINE -->
+    <script src="../Q6/event-tracker.js"></script>
+</body>
+</html>
+
+================================================================================
+SUMMARY
+================================================================================
+
+1. Add one line to each Q1-Q5 HTML file
+2. Open page in browser
+3. Press F12 for console
+4. Interact with page
+5. Watch events appear in real-time!
+
+That's it! Event tracking is now active across all projects.
+
+================================================================================
+For detailed documentation, see README.md
+For testing, open demo.html
+================================================================================
+

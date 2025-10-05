@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta tags for character encoding and responsive design -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Page title -->
+    <title>Stoplight Game - Nash Equilibrium</title>
+    
+    <!-- Link to external CSS stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Main container for the entire game -->
+    <div class="container">
+        
+        <!-- Header section with title and description -->
+        <header>
+            <h1>Stoplight Game - Nash Equilibrium</h1>
+            <p class="subtitle">A two-player game demonstrating Game Theory concepts</p>
+        </header>
+
+        <!-- Game explanation section -->
+        <div class="game-info">
+            <h2>How to Play</h2>
+            <p>
+                <!-- Explanation of the game rules -->
+                In the Stoplight Game, you (Human) and the Computer independently choose between 
+                <strong>Go</strong> or <strong>Stop</strong>. The outcomes are based on the following payoff matrix:
+            </p>
+            
+            <!-- Payoff matrix table showing outcomes for all combinations -->
+            <div class="payoff-matrix">
+                <h3>Payoff Matrix</h3>
+                <table>
+                    <!-- Table header row -->
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Computer: Go</th>
+                            <th>Computer: Stop</th>
+                        </tr>
+                    </thead>
+                    <!-- Table body with payoff values -->
+                    <tbody>
+                        <!-- Row for Human choosing Go -->
+                        <tr>
+                            <td><strong>Human: Go</strong></td>
+                            <td class="payoff-cell conflict">(-10, -10) Collision!</td>
+                            <td class="payoff-cell">(5, 2) Human goes safely</td>
+                        </tr>
+                        <!-- Row for Human choosing Stop -->
+                        <tr>
+                            <td><strong>Human: Stop</strong></td>
+                            <td class="payoff-cell">(2, 5) Computer goes safely</td>
+                            <td class="payoff-cell deadlock">(0, 0) Deadlock</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Nash Equilibrium explanation -->
+            <div class="nash-info">
+                <h3>Nash Equilibrium</h3>
+                <p>
+                    <!-- Explanation of Nash Equilibrium in this game -->
+                    A <strong>Nash Equilibrium</strong> occurs when no player can benefit by changing their strategy 
+                    while the other player keeps theirs unchanged. In this game, there are two pure strategy Nash Equilibria:
+                </p>
+                <ul>
+                    <!-- List of Nash Equilibrium outcomes -->
+                    <li><strong>(Go, Stop)</strong> - Human goes, Computer stops: Payoff (5, 2)</li>
+                    <li><strong>(Stop, Go)</strong> - Human stops, Computer goes: Payoff (2, 5)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Game controls section -->
+        <div class="game-controls">
+            <h2>Make Your Choice</h2>
+            
+            <!-- Buttons for player to make choice -->
+            <div class="choice-buttons">
+                <!-- Go button -->
+                <button id="choiceGo" class="choice-btn go-btn">
+                    <span class="icon">🟢</span>
+                    <span>Go</span>
+                </button>
+                
+                <!-- Stop button -->
+                <button id="choiceStop" class="choice-btn stop-btn">
+                    <span class="icon">🔴</span>
+                    <span>Stop</span>
+                </button>
+            </div>
+
+            <!-- Random choice button for computer -->
+            <div class="auto-play">
+                <button id="autoPlay" class="auto-btn">Let Computer Decide for Me</button>
+            </div>
+        </div>
+
+        <!-- Results display section -->
+        <div class="results-section" id="resultsSection" style="display: none;">
+            <h2>Round Results</h2>
+            
+            <!-- Display player choices -->
+            <div class="choices-display">
+                <!-- Human player choice -->
+                <div class="player-choice">
+                    <h3>Human</h3>
+                    <div class="choice-result" id="humanChoice"></div>
+                </div>
+                
+                <!-- VS separator -->
+                <div class="vs-separator">VS</div>
+                
+                <!-- Computer player choice -->
+                <div class="player-choice">
+                    <h3>Computer</h3>
+                    <div class="choice-result" id="computerChoice"></div>
+                </div>
+            </div>
+
+            <!-- Outcome and payoffs -->
+            <div class="outcome-display">
+                <h3>Outcome</h3>
+                <p class="outcome-text" id="outcomeText"></p>
+                <div class="payoffs">
+                    <div class="payoff human-payoff">
+                        <span>Human Payoff:</span>
+                        <span class="payoff-value" id="humanPayoff">0</span>
+                    </div>
+                    <div class="payoff computer-payoff">
+                        <span>Computer Payoff:</span>
+                        <span class="payoff-value" id="computerPayoff">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nash Equilibrium indicator -->
+            <div class="nash-indicator" id="nashIndicator" style="display: none;">
+                <span class="nash-badge">⭐ Nash Equilibrium Achieved! ⭐</span>
+                <p>Neither player can improve their payoff by unilaterally changing their strategy.</p>
+            </div>
+
+            <!-- Play again button -->
+            <button id="playAgain" class="play-again-btn">Play Again</button>
+        </div>
+
+        <!-- Game statistics section -->
+        <div class="statistics">
+            <h2>Game Statistics</h2>
+            <div class="stats-grid">
+                <!-- Total rounds played -->
+                <div class="stat-item">
+                    <span class="stat-label">Total Rounds:</span>
+                    <span class="stat-value" id="totalRounds">0</span>
+                </div>
+                
+                <!-- Nash Equilibrium count -->
+                <div class="stat-item">
+                    <span class="stat-label">Nash Equilibria:</span>
+                    <span class="stat-value" id="nashCount">0</span>
+                </div>
+                
+                <!-- Collision count -->
+                <div class="stat-item">
+                    <span class="stat-label">Collisions:</span>
+                    <span class="stat-value" id="collisionCount">0</span>
+                </div>
+                
+                <!-- Deadlock count -->
+                <div class="stat-item">
+                    <span class="stat-label">Deadlocks:</span>
+                    <span class="stat-value" id="deadlockCount">0</span>
+                </div>
+                
+                <!-- Human total score -->
+                <div class="stat-item">
+                    <span class="stat-label">Human Score:</span>
+                    <span class="stat-value" id="humanScore">0</span>
+                </div>
+                
+                <!-- Computer total score -->
+                <div class="stat-item">
+                    <span class="stat-label">Computer Score:</span>
+                    <span class="stat-value" id="computerScore">0</span>
+                </div>
+            </div>
+            
+            <!-- Reset statistics button -->
+            <button id="resetStats" class="reset-btn">Reset Statistics</button>
+        </div>
+
+    </div>
+
+    <!-- Link to external JavaScript file -->
+    <script src="script.js"></script>
+    
+    <!-- Event Tracker - Q6 -->
+    <script src="../Q6/event-tracker.js"></script>
+</body>
+</html>
+
+
